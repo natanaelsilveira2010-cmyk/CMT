@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CMT L - Portal Escolar</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f1f4f8;
+    color: #172033;
+}
+
+/* CABEÇALHO */
+
+header {
+    background: linear-gradient(135deg, #102a43, #1d4e89);
+    color: white;
+    padding: 20px;
+}
+
+.header-content {
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-circle {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: white;
+    color: #163b63;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.logo h1 {
+    margin: 0;
+}
+
+.logo p {
+    margin: 4px 0 0;
+    opacity: 0.85;
+}
+
+/* MENU */
+
+nav {
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,.1);
+}
+
+.nav-content {
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    overflow-x: auto;
+}
+
+nav button {
+    border: none;
+    background: transparent;
+    padding: 16px 20px;
+    cursor: pointer;
+    font-size: 15px;
+    color: #243b53;
+}
+
+nav button:hover {
+    background: #edf2f7;
+}
+
+/* CONTEÚDO */
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 25px 15px;
+}
+
+section {
+    display: none;
+}
+
+section.active {
+    display: block;
+}
+
+.welcome {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.07);
+}
+
+.welcome h2 {
+    margin-top: 0;
+}
+
+/* CARDS */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 18px;
+}
+
+.card {
+    background: white;
+    padding: 22px;
+    border-radius: 15px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.07);
+}
+
+.card h3 {
+    margin-top: 0;
+    color: #163b63;
+}
+
+.card p {
+    color: #52606d;
+}
+
+/* NOTÍCIAS */
+
+.news {
+    border-left: 5px solid #1d4e89;
+}
+
+.news small {
+    color: #829ab1;
+}
+
+/* AVISOS */
+
+.aviso {
+    border-left: 5px solid #f0ad00;
+}
+
+/* CALCULADORA */
+
+.notas {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #bcccdc;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+button.principal {
+    background: #163b63;
+    color: white;
+    border: none;
+    padding: 13px 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+.resultado {
+    margin-top: 20px;
+    background: #f5f7fa;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.numero {
+    font-size: 32px;
+    font-weight: bold;
+    color: #163b63;
+}
+
+.status {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.critico {
+    color: #c1121f;
+}
+
+.medio {
+    color: #e07a00;
+}
+
+.bom {
+    color: #168aad;
+}
+
+.muito-bom {
+    color: #2a9d8f;
+}
+
+/* MAPA */
+
+.mapa {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.sala {
+    padding: 18px 10px;
+    background: #e8f1fa;
+    border: 2px solid #1d4e89;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.sala:hover {
+    background: #d6e7f7;
+}
+
+/* RODAPÉ */
+
+footer {
+    margin-top: 40px;
+    background: #102a43;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+@media(max-width:600px) {
+
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .notas {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .mapa {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="header-content">
+
+    <div class="logo">
+
+        <div class="logo-circle">
+            CMT L
+        </div>
+
+        <div>
+            <h1>CMT L</h1>
+            <p>Portal Escolar</p>
+        </div>
+
+    </div>
+
+    <div>
+        <strong>Colégio Militar Tiradentes</strong><br>
+        <small>Número da escola: XXXXX</small>
+    </div>
+
+</div>
+
+</header>
+
+
+<nav>
+
+<div class="nav-content">
+
+<button onclick="abrirPagina('inicio')">
+Início
+</button>
+
+<button onclick="abrirPagina('noticias')">
+Notícias
+</button>
+
+<button onclick="abrirPagina('avisos')">
+Avisos
+</button>
+
+<button onclick="abrirPagina('notas')">
+Notas
+</button>
+
+<button onclick="abrirPagina('salas')">
+Salas
+</button>
+
+<button onclick="abrirPagina('sobre')">
+Escola
+</button>
+
+</div>
+
+</nav>
+
+
+<main class="container">
+
+
+<!-- INÍCIO -->
+
+<section id="inicio" class="active">
+
+<div class="welcome">
+
+<h2>Bem-vindo ao CMT L</h2>
+
+<p>
+Portal oficial de informações escolares,
+notas, avisos, notícias e organização das salas.
+</p>
+
+</div>
+
+
+<div class="grid">
+
+<div class="card">
+
+<h3>📊 Desempenho</h3>
+
+<p>
+Consulte a calculadora de notas e veja
+o nível de desempenho acadêmico.
+</p>
+
+<button class="principal"
+onclick="abrirPagina('notas')">
+
+Calcular notas
+
+</button>
+
+</div>
+
+
+<div class="card">
+
+<h3>📢 Avisos</h3>
+
+<p>
+Confira os comunicados importantes
+da direção e da escola.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>📰 Notícias</h3>
+
+<p>
+Acompanhe os acontecimentos,
+projetos e eventos do colégio.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>🏫 Salas</h3>
+
+<p>
+Consulte a organização das salas
+e ambientes escolares.
+</p>
+
+<button class="principal"
+onclick="abrirPagina('salas')">
+
+Ver mapa
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- NOTÍCIAS -->
+
+<section id="noticias">
+
+<div class="welcome">
+
+<h2>📰 Notícias do Colégio</h2>
+
+</div>
+
+<div class="grid">
+
+<div class="card news">
+
+<h3>Feira do Empreendedor</h3>
+
+<p>
+Projetos desenvolvidos pelos alunos
+serão apresentados durante a feira escolar.
+</p>
+
+<small>Publicado pela escola</small>
+
+</div>
+
+
+<div class="card news">
+
+<h3>Novo ano letivo</h3>
+
+<p>
+Informações sobre organização das
+turmas e atividades do próximo ano.
+</p>
+
+<small>Publicado pela direção</small>
+
+</div>
+
+
+<div class="card news">
+
+<h3>Projetos estudantis</h3>
+
+<p>
+O colégio continua incentivando
+projetos de inovação e tecnologia.
+</p>
+
+<small>Publicado pela escola</small>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- AVISOS -->
+
+<section id="avisos">
+
+<div class="welcome">
+
+<h2>📢 Avisos</h2>
+
+</div>
+
+<div class="card aviso">
+
+<h3>Aviso da Direção</h3>
+
+<p>
+Este espaço será utilizado para
+comunicados importantes aos alunos
+e responsáveis.
+</p>
+
+</div>
+
+<br>
+
+<div class="card aviso">
+
+<h3>Reuniões</h3>
+
+<p>
+As informações sobre reuniões,
+horários e locais serão publicadas aqui.
+</p>
+
+</div>
+
+</section>
+
+
+
+<!-- NOTAS -->
+
+<section id="notas">
+
+<div class="welcome">
+
+<h2>📊 Calculadora de Notas</h2>
+
+<p>
+Digite quatro notas para calcular o
+somatório e a média.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="notas">
+
+<input
+type="number"
+id="nota1"
+placeholder="Nota 1"
+min="0"
+max="10"
+step="0.1">
+
+<input
+type="number"
+id="nota2"
+placeholder="Nota 2"
+min="0"
+max="10"
+step="0.1">
+
+<input
+type="number"
+id="nota3"
+placeholder="Nota 3"
+min="0"
+max="10"
+step="0.1">
+
+<input
+type="number"
+id="nota4"
+placeholder="Nota 4"
+min="0"
+max="10"
+step="0.1">
+
+</div>
+
+
+<button
+class="principal"
+onclick="calcularNotas()">
+
+CALCULAR
+
+</button>
+
+
+<div class="resultado">
+
+<p id="conta">
+Digite as notas acima
+</p>
+
+<p>Somatório</p>
+
+<div
+id="soma"
+class="numero">
+0
+</div>
+
+
+<p>Média</p>
+
+<div
+id="media"
+class="numero">
+0,0
+</div>
+
+
+<div
+id="status"
+class="status">
+Aguardando cálculo
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- SALAS -->
+
+<section id="salas">
+
+<div class="welcome">
+
+<h2>🏫 Mapa das Salas</h2>
+
+<p>
+Mapa geral das salas do colégio.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>Bloco A</h3>
+
+<div class="mapa">
+
+<div class="sala">Sala A01</div>
+<div class="sala">Sala A02</div>
+<div class="sala">Sala A03</div>
+<div class="sala">Sala A04</div>
+<div class="sala">Sala A05</div>
+
+<div class="sala">Sala A06</div>
+<div class="sala">Sala A07</div>
+<div class="sala">Sala A08</div>
+<div class="sala">Sala A09</div>
+<div class="sala">Sala A10</div>
+
+</div>
+
+</div>
+
+
+<br>
+
+
+<div class="card">
+
+<h3>Bloco B</h3>
+
+<div class="mapa">
+
+<div class="sala">Sala B01</div>
+<div class="sala">Sala B02</div>
+<div class="sala">Sala B03</div>
+<div class="sala">Sala B04</div>
+<div class="sala">Sala B05</div>
+
+</div>
+
+</div>
+
+
+<br>
+
+
+<div class="card">
+
+<h3>🔐 Localização individual dos alunos</h3>
+
+<p>
+Futuramente, responsáveis autorizados
+poderão consultar a sala e o assento
+do aluno através de um sistema protegido.
+</p>
+
+<p>
+Essa função deverá exigir autenticação
+e autorização da escola.
+</p>
+
+</div>
+
+</section>
+
+
+
+<!-- SOBRE -->
+
+<section id="sobre">
+
+<div class="welcome">
+
+<h2>🏫 Sobre o CMT L</h2>
+
+</div>
+
+
+<div class="grid">
+
+<div class="card">
+
+<h3>Direção</h3>
+
+<p>
+<strong>Diretora:</strong><br>
+NOME DA DIRETORA
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>Secretaria</h3>
+
+<p>
+<strong>Secretaria:</strong><br>
+NOME DA SECRETARIA
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>Escola</h3>
+
+<p>
+<strong>Colégio:</strong><br>
+Colégio Militar Tiradentes
+</p>
+
+<p>
+<strong>Número:</strong><br>
+XXXXX
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<footer>
+
+<p>
+<strong>CMT L</strong> • Portal Escolar
+</p>
+
+<p>
+Sistema em desenvolvimento
+</p>
+
+</footer>
+
+
+
+<script>
+
+/* TROCA DE PÁGINAS */
+
+function abrirPagina(pagina) {
+
+    let secoes = document.querySelectorAll("section");
+
+    secoes.forEach(function(secao) {
+        secao.classList.remove("active");
+    });
+
+    document.getElementById(pagina).classList.add("active");
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+
+/* CALCULADORA */
+
+function calcularNotas() {
+
+    let n1 = Number(document.getElementById("nota1").value);
+    let n2 = Number(document.getElementById("nota2").value);
+    let n3 = Number(document.getElementById("nota3").value);
+    let n4 = Number(document.getElementById("nota4").value);
+
+    let notas = [n1, n2, n3, n4];
+
+    if (notas.some(nota => nota < 0 || nota > 10)) {
+
+        alert("As notas devem estar entre 0 e 10.");
+
+        return;
+    }
+
+    let soma = n1 + n2 + n3 + n4;
+
+    let media = soma / 4;
+
+
+    document.getElementById("conta").innerText =
+        `${n1} + ${n2} + ${n3} + ${n4} = ${soma}`;
+
+
+    document.getElementById("soma").innerText =
+        soma.toFixed(1).replace(".", ",");
+
+
+    document.getElementById("media").innerText =
+        media.toFixed(1).replace(".", ",");
+
+
+    let status =
+        document.getElementById("status");
+
+
+    status.className = "status";
+
+
+    if (media < 5) {
+
+        status.innerText =
+            "🔴 ESTADO CRÍTICO";
+
+        status.classList.add("critico");
+
+    }
+
+    else if (media < 7) {
+
+        status.innerText =
+            "🟠 ESTADO MÉDIO";
+
+        status.classList.add("medio");
+
+    }
+
+    else if (media < 9) {
+
+        status.innerText =
+            "🟢 ESTADO BOM";
+
+        status.classList.add("bom");
+
+    }
+
+    else {
+
+        status.innerText =
+            "🔵 ESTADO MUITO BOM";
+
+        status.classList.add("muito-bom");
+
+    }
+
+}
+
+</script>
+
+</body>
+  </html>
