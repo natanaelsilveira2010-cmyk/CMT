@@ -747,4 +747,1616 @@
       .hero-botoes { flex-direction: column; width: 100%; }
       .hero-botoes .btn { width: 100%; }
       .stats-grid { grid-template-columns: 1fr 1fr; }
-      .ta
+      .tabela { font-size: 0.8rem; }
+      .tabela th, .tabela td { padding: 8px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BANNER DE DEMONSTRAÇÃO -->
+  <div class="demo-banner">
+    DEMONSTRAÇÃO • DADOS FICTÍCIOS
+    <small> — Este sistema é um protótipo para apresentação. Não inserir dados reais.</small>
+  </div>
+
+  <!-- ========== PÁGINA INICIAL ========== -->
+  <div id="landing">
+    <header class="header-global">
+      <div class="header-brand">
+        <div class="logo-box">CMT</div>
+        <div class="header-text">
+          <h1>CMT L</h1>
+          <p>Portal Escolar</p>
+        </div>
+      </div>
+      <div class="header-escola">
+        <strong>Colégio Militar Tiradentes</strong>
+        Escola nº 50 • Estreito-MA
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="hero-content">
+        <div class="logo-grande">CMT</div>
+        <h1>CMT L</h1>
+        <p class="subtitulo">Portal Escolar</p>
+        <p class="escola-info"><strong>Colégio Militar Tiradentes</strong></p>
+        <p class="escola-info">Escola nº 50 • Estreito - Maranhão</p>
+        <p class="slogan">"Disciplina, Conhecimento e Futuro."</p>
+
+        <div class="hero-botoes">
+          <button class="btn btn-primario" onclick="mostrarTela('login')">🔐 ACESSAR PORTAL</button>
+          <button class="btn btn-secundario" onclick="mostrarTela('matricula')">📝 FAZER MATRÍCULA</button>
+        </div>
+
+        <div class="atalhos">
+          <div class="atalho-card" onclick="alertaDemo('Notas')">
+            <div class="icone">📊</div>
+            <span>Notas</span>
+          </div>
+          <div class="atalho-card" onclick="alertaDemo('Frequência')">
+            <div class="icone">📅</div>
+            <span>Frequência</span>
+          </div>
+          <div class="atalho-card" onclick="alertaDemo('Turmas e Salas')">
+            <div class="icone">🏫</div>
+            <span>Turmas e Salas</span>
+          </div>
+          <div class="atalho-card" onclick="alertaDemo('Avisos')">
+            <div class="icone">📢</div>
+            <span>Avisos</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-landing">
+      CMT L • Colégio Militar Tiradentes • Escola nº 50 • Estreito-MA<br>
+      Protótipo de demonstração — Dados totalmente fictícios
+    </footer>
+  </div>
+
+  <!-- ========== LOGIN ========== -->
+  <div id="login" class="auth-page hidden">
+    <div class="auth-card">
+      <div class="logo-auth">CMT</div>
+      <h2>CMT L</h2>
+      <p class="sub">Portal Escolar • Acesso</p>
+
+      <div id="login-erro" class="msg-erro hidden"></div>
+
+      <form onsubmit="fazerLogin(event)">
+        <div class="form-group">
+          <label for="usuario">Usuário / Matrícula</label>
+          <input type="text" id="usuario" placeholder="Ex: aluno.demo" required autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label for="senha">Senha</label>
+          <input type="password" id="senha" placeholder="••••••••" required autocomplete="current-password" />
+        </div>
+        <button type="submit" class="btn btn-azul btn-block">ENTRAR</button>
+      </form>
+
+      <div class="auth-links">
+        <a href="#" onclick="mostrarTela('landing'); return false;">← Voltar ao início</a>
+        &nbsp;•&nbsp;
+        <a href="#" onclick="alert('Em um sistema real, o responsável receberia um código de ativação da escola para o primeiro acesso.'); return false;">Primeiro acesso</a>
+      </div>
+
+      <div class="demo-contas">
+        <h4>Contas de demonstração (clique para preencher)</h4>
+        <div class="demo-contas-grid">
+          <div class="demo-conta" onclick="preencherLogin('aluno.demo')">
+            <strong>Aluno</strong>aluno.demo
+          </div>
+          <div class="demo-conta" onclick="preencherLogin('professor.demo')">
+            <strong>Professor</strong>professor.demo
+          </div>
+          <div class="demo-conta" onclick="preencherLogin('secretaria.demo')">
+            <strong>Secretaria</strong>secretaria.demo
+          </div>
+          <div class="demo-conta" onclick="preencherLogin('direcao.demo')">
+            <strong>Direção</strong>direcao.demo
+          </div>
+          <div class="demo-conta" onclick="preencherLogin('admin.demo')" style="grid-column: span 2;">
+            <strong>Administrador Técnico</strong>admin.demo
+          </div>
+        </div>
+        <p style="text-align:center;font-size:0.7rem;color:#94a3b8;margin-top:8px;">Senha de todas: <strong>123456</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MATRÍCULA ========== -->
+  <div id="matricula" class="auth-page hidden">
+    <div class="auth-card" style="max-width:520px;">
+      <div class="logo-auth">CMT</div>
+      <h2>Solicitação de Matrícula</h2>
+      <p class="sub">Preencha os dados do aluno. A solicitação ficará <strong>PENDENTE</strong> até análise da secretaria.</p>
+
+      <div id="matricula-msg" class="hidden"></div>
+
+      <form id="form-matricula" onsubmit="enviarMatricula(event)">
+        <div class="form-group">
+          <label>Nome completo do aluno *</label>
+          <input type="text" id="mat-nome" required placeholder="Ex: Pedro Silva" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Data de nascimento *</label>
+            <input type="date" id="mat-nasc" required />
+          </div>
+          <div class="form-group">
+            <label>Ano/Turma pretendida *</label>
+            <select id="mat-turma" required>
+              <option value="">Selecione...</option>
+              <option value="9º A">9º Ano A</option>
+              <option value="9º B">9º Ano B</option>
+              <option value="8º A">8º Ano A (futuro)</option>
+              <option value="8º B">8º Ano B (futuro)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Nome do responsável *</label>
+          <input type="text" id="mat-resp" required placeholder="Ex: Ana Silva" />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>E-mail do responsável *</label>
+            <input type="email" id="mat-email" required placeholder="exemplo@email.com" />
+          </div>
+          <div class="form-group">
+            <label>Telefone *</label>
+            <input type="tel" id="mat-tel" required placeholder="(99) 99999-9999" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Observações (opcional)</label>
+          <textarea id="mat-obs" placeholder="Informações adicionais..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-azul btn-block">ENVIAR SOLICITAÇÃO</button>
+      </form>
+
+      <div class="auth-links">
+        <a href="#" onclick="mostrarTela('landing'); return false;">← Voltar ao início</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== PORTAL (após login) ========== -->
+  <div id="portal" class="hidden">
+    <div class="overlay" id="overlay" onclick="fecharSidebar()"></div>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-side">
+          <div class="logo-box-sm">CMT</div>
+          <div>
+            <h2>CMT L</h2>
+            <p id="sidebar-area">Área do Sistema</p>
+          </div>
+        </div>
+      </div>
+      <div class="user-info">
+        <div class="nome" id="user-nome">—</div>
+        <span class="papel" id="user-papel">—</span>
+      </div>
+      <nav class="nav-menu" id="nav-menu">
+        <!-- Preenchido dinamicamente -->
+      </nav>
+      <div class="sidebar-footer">
+        <button class="btn-sair" onclick="fazerLogout()">🚪 Sair</button>
+      </div>
+    </aside>
+
+    <div class="main-content">
+      <div class="topbar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+          <h3 id="page-title">Início</h3>
+        </div>
+        <div style="font-size:0.8rem;color:var(--texto-suave);" id="topbar-info"></div>
+      </div>
+      <div class="content-area" id="content-area">
+        <!-- Conteúdo dinâmico -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ============================================================
+    // DADOS FICTÍCIOS — DEMONSTRAÇÃO
+    // ============================================================
+
+    const USUARIOS = {
+      'aluno.demo': {
+        senha: '123456',
+        nome: 'Pedro Silva',
+        tipo: 'aluno',
+        matricula: '20270001',
+        alunoId: '20270001'
+      },
+      'professor.demo': {
+        senha: '123456',
+        nome: 'Carlos Almeida',
+        tipo: 'professor',
+        turmas: ['9º A', '9º B']
+      },
+      'secretaria.demo': {
+        senha: '123456',
+        nome: 'Fernanda Costa',
+        tipo: 'secretaria'
+      },
+      'direcao.demo': {
+        senha: '123456',
+        nome: 'Maj. Roberto Mendes',
+        tipo: 'direcao'
+      },
+      'admin.demo': {
+        senha: '123456',
+        nome: 'Admin Técnico',
+        tipo: 'admin'
+      }
+    };
+
+    const ALUNOS = {
+      '20270001': {
+        nome: 'Pedro Silva',
+        matricula: '20270001',
+        turma: '9º A',
+        sala: '04',
+        media: 8.5,
+        frequencia: 96,
+        notas: { Matemática: 8.5, Português: 8.8, Ciências: 8.3, História: 8.0, Geografia: 8.7, Inglês: 9.0 },
+        responsavel: 'Ana Silva',
+        emailResp: 'ana.silva@email.com',
+        telefone: '(99) 98765-4321'
+      },
+      '20270002': {
+        nome: 'Maria Santos',
+        matricula: '20270002',
+        turma: '9º A',
+        sala: '04',
+        media: 9.2,
+        frequencia: 98,
+        notas: { Matemática: 9.5, Português: 9.0, Ciências: 9.3, História: 8.8, Geografia: 9.1, Inglês: 9.5 },
+        responsavel: 'José Santos',
+        emailResp: 'jose.santos@email.com',
+        telefone: '(99) 98765-1111'
+      },
+      '20270003': {
+        nome: 'João Oliveira',
+        matricula: '20270003',
+        turma: '9º A',
+        sala: '04',
+        media: 7.4,
+        frequencia: 91,
+        notas: { Matemática: 7.0, Português: 7.5, Ciências: 7.2, História: 7.8, Geografia: 7.0, Inglês: 8.0 },
+        responsavel: 'Carla Oliveira',
+        emailResp: 'carla.oli@email.com',
+        telefone: '(99) 98765-2222'
+      },
+      '20270004': {
+        nome: 'Luana Martins',
+        matricula: '20270004',
+        turma: '9º B',
+        sala: '05',
+        media: 8.8,
+        frequencia: 95,
+        notas: { Matemática: 8.5, Português: 9.0, Ciências: 8.7, História: 8.9, Geografia: 8.5, Inglês: 9.2 },
+        responsavel: 'Paulo Martins',
+        emailResp: 'paulo.m@email.com',
+        telefone: '(99) 98765-3333'
+      },
+      '20270005': {
+        nome: 'Bruno Santos',
+        matricula: '20270005',
+        turma: '9º B',
+        sala: '05',
+        media: 6.9,
+        frequencia: 89,
+        notas: { Matemática: 6.5, Português: 7.0, Ciências: 6.8, História: 7.2, Geografia: 6.5, Inglês: 7.5 },
+        responsavel: 'Sandra Santos',
+        emailResp: 'sandra.s@email.com',
+        telefone: '(99) 98765-4444'
+      },
+      // Completando 25 por turma com nomes fictícios extras
+      '20270006': { nome: 'Ana Beatriz Lima', matricula: '20270006', turma: '9º A', sala: '04', media: 8.1, frequencia: 94, notas: { Matemática: 8.0, Português: 8.2, Ciências: 8.0, História: 8.1, Geografia: 8.0, Inglês: 8.3 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0006' },
+      '20270007': { nome: 'Carlos Eduardo Souza', matricula: '20270007', turma: '9º A', sala: '04', media: 7.8, frequencia: 92, notas: { Matemática: 7.5, Português: 8.0, Ciências: 7.8, História: 7.9, Geografia: 7.5, Inglês: 8.1 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0007' },
+      '20270008': { nome: 'Daniela Ferreira', matricula: '20270008', turma: '9º A', sala: '04', media: 9.0, frequencia: 97, notas: { Matemática: 9.0, Português: 9.2, Ciências: 8.8, História: 9.0, Geografia: 8.9, Inglês: 9.1 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0008' },
+      '20270009': { nome: 'Eduardo Rocha', matricula: '20270009', turma: '9º A', sala: '04', media: 7.2, frequencia: 90, notas: { Matemática: 7.0, Português: 7.3, Ciências: 7.1, História: 7.5, Geografia: 7.0, Inglês: 7.4 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0009' },
+      '20270010': { nome: 'Fernanda Alves', matricula: '20270010', turma: '9º A', sala: '04', media: 8.6, frequencia: 95, notas: { Matemática: 8.5, Português: 8.7, Ciências: 8.4, História: 8.6, Geografia: 8.5, Inglês: 8.9 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0010' },
+      '20270011': { nome: 'Gabriel Costa', matricula: '20270011', turma: '9º A', sala: '04', media: 7.9, frequencia: 93, notas: { Matemática: 7.8, Português: 8.0, Ciências: 7.7, História: 8.1, Geografia: 7.8, Inglês: 8.0 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0011' },
+      '20270012': { nome: 'Helena Dias', matricula: '20270012', turma: '9º A', sala: '04', media: 8.9, frequencia: 96, notas: { Matemática: 8.8, Português: 9.0, Ciências: 8.7, História: 9.0, Geografia: 8.8, Inglês: 9.1 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0012' },
+      '20270013': { nome: 'Igor Mendes', matricula: '20270013', turma: '9º A', sala: '04', media: 6.8, frequencia: 88, notas: { Matemática: 6.5, Português: 7.0, Ciências: 6.7, História: 7.0, Geografia: 6.5, Inglês: 7.2 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0013' },
+      '20270014': { nome: 'Juliana Barbosa', matricula: '20270014', turma: '9º A', sala: '04', media: 8.3, frequencia: 94, notas: { Matemática: 8.2, Português: 8.4, Ciências: 8.1, História: 8.5, Geografia: 8.0, Inglês: 8.6 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0014' },
+      '20270015': { nome: 'Kevin Nunes', matricula: '20270015', turma: '9º A', sala: '04', media: 7.6, frequencia: 91, notas: { Matemática: 7.5, Português: 7.7, Ciências: 7.4, História: 7.8, Geografia: 7.3, Inglês: 7.9 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0015' },
+      '20270016': { nome: 'Larissa Campos', matricula: '20270016', turma: '9º A', sala: '04', media: 9.1, frequencia: 98, notas: { Matemática: 9.0, Português: 9.3, Ciências: 9.0, História: 9.1, Geografia: 9.0, Inglês: 9.2 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0016' },
+      '20270017': { nome: 'Marcos Vinícius', matricula: '20270017', turma: '9º A', sala: '04', media: 7.0, frequencia: 89, notas: { Matemática: 6.8, Português: 7.2, Ciências: 6.9, História: 7.1, Geografia: 6.8, Inglês: 7.3 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0017' },
+      '20270018': { nome: 'Natália Ribeiro', matricula: '20270018', turma: '9º A', sala: '04', media: 8.4, frequencia: 95, notas: { Matemática: 8.3, Português: 8.5, Ciências: 8.2, História: 8.6, Geografia: 8.3, Inglês: 8.7 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0018' },
+      '20270019': { nome: 'Otávio Gomes', matricula: '20270019', turma: '9º A', sala: '04', media: 7.7, frequencia: 92, notas: { Matemática: 7.6, Português: 7.8, Ciências: 7.5, História: 7.9, Geografia: 7.4, Inglês: 8.0 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0019' },
+      '20270020': { nome: 'Patrícia Souza', matricula: '20270020', turma: '9º A', sala: '04', media: 8.7, frequencia: 96, notas: { Matemática: 8.6, Português: 8.8, Ciências: 8.5, História: 8.9, Geografia: 8.6, Inglês: 9.0 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0020' },
+      '20270021': { nome: 'Rafael Lima', matricula: '20270021', turma: '9º A', sala: '04', media: 7.3, frequencia: 90, notas: { Matemática: 7.1, Português: 7.4, Ciências: 7.2, História: 7.5, Geografia: 7.0, Inglês: 7.6 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0021' },
+      '20270022': { nome: 'Sofia Carvalho', matricula: '20270022', turma: '9º A', sala: '04', media: 9.3, frequencia: 99, notas: { Matemática: 9.2, Português: 9.5, Ciências: 9.1, História: 9.3, Geografia: 9.2, Inglês: 9.5 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0022' },
+      '20270023': { nome: 'Thiago Moreira', matricula: '20270023', turma: '9º A', sala: '04', media: 6.5, frequencia: 87, notas: { Matemática: 6.2, Português: 6.8, Ciências: 6.4, História: 6.7, Geografia: 6.3, Inglês: 6.9 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0023' },
+      '20270024': { nome: 'Úrsula Pinto', matricula: '20270024', turma: '9º A', sala: '04', media: 8.0, frequencia: 93, notas: { Matemática: 7.9, Português: 8.1, Ciências: 7.8, História: 8.2, Geografia: 7.9, Inglês: 8.3 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0024' },
+      '20270025': { nome: 'Vinícius Azevedo', matricula: '20270025', turma: '9º A', sala: '04', media: 7.5, frequencia: 91, notas: { Matemática: 7.4, Português: 7.6, Ciências: 7.3, História: 7.7, Geografia: 7.2, Inglês: 7.8 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0025' },
+      // 9º B
+      '20270026': { nome: 'Amanda Torres', matricula: '20270026', turma: '9º B', sala: '05', media: 8.2, frequencia: 94, notas: { Matemática: 8.1, Português: 8.3, Ciências: 8.0, História: 8.4, Geografia: 8.0, Inglês: 8.5 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0026' },
+      '20270027': { nome: 'Bernardo Lopes', matricula: '20270027', turma: '9º B', sala: '05', media: 7.1, frequencia: 90, notas: { Matemática: 7.0, Português: 7.2, Ciências: 6.9, História: 7.3, Geografia: 6.8, Inglês: 7.4 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0027' },
+      '20270028': { nome: 'Camila Freitas', matricula: '20270028', turma: '9º B', sala: '05', media: 9.0, frequencia: 97, notas: { Matemática: 8.9, Português: 9.1, Ciências: 8.8, História: 9.2, Geografia: 8.9, Inglês: 9.3 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0028' },
+      '20270029': { nome: 'Diego Araújo', matricula: '20270029', turma: '9º B', sala: '05', media: 6.7, frequencia: 88, notas: { Matemática: 6.5, Português: 6.9, Ciências: 6.6, História: 7.0, Geografia: 6.4, Inglês: 7.1 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0029' },
+      '20270030': { nome: 'Elisa Monteiro', matricula: '20270030', turma: '9º B', sala: '05', media: 8.5, frequencia: 95, notas: { Matemática: 8.4, Português: 8.6, Ciências: 8.3, História: 8.7, Geografia: 8.4, Inglês: 8.8 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0030' },
+      '20270031': { nome: 'Felipe Castro', matricula: '20270031', turma: '9º B', sala: '05', media: 7.8, frequencia: 92, notas: { Matemática: 7.7, Português: 7.9, Ciências: 7.6, História: 8.0, Geografia: 7.5, Inglês: 8.1 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0031' },
+      '20270032': { nome: 'Giovana Melo', matricula: '20270032', turma: '9º B', sala: '05', media: 8.9, frequencia: 96, notas: { Matemática: 8.8, Português: 9.0, Ciências: 8.7, História: 9.1, Geografia: 8.8, Inglês: 9.2 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0032' },
+      '20270033': { nome: 'Henrique Dias', matricula: '20270033', turma: '9º B', sala: '05', media: 7.4, frequencia: 91, notas: { Matemática: 7.3, Português: 7.5, Ciências: 7.2, História: 7.6, Geografia: 7.1, Inglês: 7.7 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0033' },
+      '20270034': { nome: 'Isabela Nogueira', matricula: '20270034', turma: '9º B', sala: '05', media: 9.2, frequencia: 98, notas: { Matemática: 9.1, Português: 9.3, Ciências: 9.0, História: 9.4, Geografia: 9.1, Inglês: 9.4 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0034' },
+      '20270035': { nome: 'Jonas Cardoso', matricula: '20270035', turma: '9º B', sala: '05', media: 6.9, frequencia: 89, notas: { Matemática: 6.7, Português: 7.1, Ciências: 6.8, História: 7.0, Geografia: 6.6, Inglês: 7.2 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0035' },
+      '20270036': { nome: 'Kátia Ramos', matricula: '20270036', turma: '9º B', sala: '05', media: 8.1, frequencia: 93, notas: { Matemática: 8.0, Português: 8.2, Ciências: 7.9, História: 8.3, Geografia: 8.0, Inglês: 8.4 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0036' },
+      '20270037': { nome: 'Leonardo Vieira', matricula: '20270037', turma: '9º B', sala: '05', media: 7.6, frequencia: 91, notas: { Matemática: 7.5, Português: 7.7, Ciências: 7.4, História: 7.8, Geografia: 7.3, Inglês: 7.9 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0037' },
+      '20270038': { nome: 'Mariana Duarte', matricula: '20270038', turma: '9º B', sala: '05', media: 8.6, frequencia: 95, notas: { Matemática: 8.5, Português: 8.7, Ciências: 8.4, História: 8.8, Geografia: 8.5, Inglês: 8.9 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0038' },
+      '20270039': { nome: 'Nicolas Barros', matricula: '20270039', turma: '9º B', sala: '05', media: 7.0, frequencia: 90, notas: { Matemática: 6.9, Português: 7.1, Ciências: 6.8, História: 7.2, Geografia: 6.7, Inglês: 7.3 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0039' },
+      '20270040': { nome: 'Olivia Fernandes', matricula: '20270040', turma: '9º B', sala: '05', media: 8.8, frequencia: 96, notas: { Matemática: 8.7, Português: 8.9, Ciências: 8.6, História: 9.0, Geografia: 8.7, Inglês: 9.1 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0040' },
+      '20270041': { nome: 'Pedro Henrique', matricula: '20270041', turma: '9º B', sala: '05', media: 7.9, frequencia: 93, notas: { Matemática: 7.8, Português: 8.0, Ciências: 7.7, História: 8.1, Geografia: 7.6, Inglês: 8.2 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0041' },
+      '20270042': { nome: 'Queila Andrade', matricula: '20270042', turma: '9º B', sala: '05', media: 8.3, frequencia: 94, notas: { Matemática: 8.2, Português: 8.4, Ciências: 8.1, História: 8.5, Geografia: 8.0, Inglês: 8.6 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0042' },
+      '20270043': { nome: 'Renato Silva', matricula: '20270043', turma: '9º B', sala: '05', media: 6.6, frequencia: 87, notas: { Matemática: 6.4, Português: 6.8, Ciências: 6.5, História: 6.9, Geografia: 6.3, Inglês: 7.0 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0043' },
+      '20270044': { nome: 'Sabrina Teixeira', matricula: '20270044', turma: '9º B', sala: '05', media: 9.1, frequencia: 97, notas: { Matemática: 9.0, Português: 9.2, Ciências: 8.9, História: 9.3, Geografia: 9.0, Inglês: 9.4 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0044' },
+      '20270045': { nome: 'Túlio Batista', matricula: '20270045', turma: '9º B', sala: '05', media: 7.5, frequencia: 91, notas: { Matemática: 7.4, Português: 7.6, Ciências: 7.3, História: 7.7, Geografia: 7.2, Inglês: 7.8 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0045' },
+      '20270046': { nome: 'Vanessa Cunha', matricula: '20270046', turma: '9º B', sala: '05', media: 8.4, frequencia: 94, notas: { Matemática: 8.3, Português: 8.5, Ciências: 8.2, História: 8.6, Geografia: 8.1, Inglês: 8.7 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0046' },
+      '20270047': { nome: 'Wagner Prado', matricula: '20270047', turma: '9º B', sala: '05', media: 7.2, frequencia: 90, notas: { Matemática: 7.1, Português: 7.3, Ciências: 7.0, História: 7.4, Geografia: 6.9, Inglês: 7.5 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0047' },
+      '20270048': { nome: 'Ximena Lopes', matricula: '20270048', turma: '9º B', sala: '05', media: 8.7, frequencia: 95, notas: { Matemática: 8.6, Português: 8.8, Ciências: 8.5, História: 8.9, Geografia: 8.6, Inglês: 9.0 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0048' },
+      '20270049': { nome: 'Yago Correia', matricula: '20270049', turma: '9º B', sala: '05', media: 6.8, frequencia: 88, notas: { Matemática: 6.6, Português: 7.0, Ciências: 6.7, História: 6.9, Geografia: 6.5, Inglês: 7.1 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0049' },
+      '20270050': { nome: 'Zélia Martins', matricula: '20270050', turma: '9º B', sala: '05', media: 8.0, frequencia: 93, notas: { Matemática: 7.9, Português: 8.1, Ciências: 7.8, História: 8.2, Geografia: 7.9, Inglês: 8.3 }, responsavel: 'Resp. Demo', emailResp: 'demo@email.com', telefone: '(99) 90000-0050' }
+    };
+
+    // Informações médicas restritas — APENAS DIREÇÃO
+    const DADOS_RESTRITOS = {
+      '20270001': {
+        condicoes: [
+          'Dificuldade motora leve na mão esquerda (fictício)',
+          'Uso de óculos para correção de miopia (fictício)'
+        ],
+        observacoes: 'Acompanhamento periódico com oftalmologista. Evitar atividades que exijam destreza fina prolongada com a mão esquerda. (DADOS FICTÍCIOS)'
+      },
+      '20270005': {
+        condicoes: [
+          'Asma controlada (fictício)',
+          'Alergia a pólen (fictício)'
+        ],
+        observacoes: 'Possui inalador de resgate. Em caso de crise, contatar responsável imediatamente. (DADOS FICTÍCIOS)'
+      }
+    };
+
+    const AVISOS = [
+      {
+        titulo: 'REUNIÃO DE RESPONSÁVEIS',
+        texto: 'Comunicado fictício para demonstração. A reunião de responsáveis do 9º ano será realizada no dia 15/03/2027, às 19h, no auditório da escola.',
+        data: '10/02/2027'
+      },
+      {
+        titulo: 'INÍCIO DO ANO LETIVO',
+        texto: 'Informações do calendário escolar serão publicadas aqui. O ano letivo de 2027 inicia em 05 de fevereiro. (Dados fictícios)',
+        data: '20/01/2027'
+      },
+      {
+        titulo: 'UNIFORME ESCOLAR',
+        texto: 'Lembramos que o uso do uniforme completo é obrigatório. Consulte a secretaria para informações sobre aquisição. (Demonstração)',
+        data: '05/02/2027'
+      }
+    ];
+
+    const TURMAS = {
+      '9º A': { sala: '04', total: 25 },
+      '9º B': { sala: '05', total: 25 }
+    };
+
+    // ============================================================
+    // ESTADO DA APLICAÇÃO
+    // ============================================================
+
+    let usuarioAtual = null;
+    let paginaAtual = 'inicio';
+
+    // Matrículas pendentes (localStorage)
+    function getMatriculasPendentes() {
+      try {
+        return JSON.parse(localStorage.getItem('cmtl_matriculas') || '[]');
+      } catch { return []; }
+    }
+    function salvarMatriculas(lista) {
+      localStorage.setItem('cmtl_matriculas', JSON.stringify(lista));
+    }
+
+    // ============================================================
+    // NAVEGAÇÃO DE TELAS
+    // ============================================================
+
+    function mostrarTela(tela) {
+      document.getElementById('landing').classList.add('hidden');
+      document.getElementById('login').classList.add('hidden');
+      document.getElementById('matricula').classList.add('hidden');
+      document.getElementById('portal').classList.add('hidden');
+
+      if (tela === 'landing') {
+        document.getElementById('landing').classList.remove('hidden');
+      } else if (tela === 'login') {
+        document.getElementById('login').classList.remove('hidden');
+        document.getElementById('login-erro').classList.add('hidden');
+        document.getElementById('usuario').value = '';
+        document.getElementById('senha').value = '';
+      } else if (tela === 'matricula') {
+        document.getElementById('matricula').classList.remove('hidden');
+        document.getElementById('matricula-msg').classList.add('hidden');
+        document.getElementById('form-matricula').reset();
+      } else if (tela === 'portal') {
+        document.getElementById('portal').classList.remove('hidden');
+        renderizarPortal();
+      }
+    }
+
+    function alertaDemo(area) {
+      alert(`Área "${area}" disponível após login no portal.\n\nUse as contas de demonstração para acessar.`);
+    }
+
+    function preencherLogin(user) {
+      document.getElementById('usuario').value = user;
+      document.getElementById('senha').value = '123456';
+    }
+
+    // ============================================================
+    // LOGIN / LOGOUT
+    // ============================================================
+
+    function fazerLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('usuario').value.trim().toLowerCase();
+      const senha = document.getElementById('senha').value;
+      const erroEl = document.getElementById('login-erro');
+
+      const conta = USUARIOS[user];
+      if (!conta || conta.senha !== senha) {
+        erroEl.textContent = 'Usuário ou senha incorretos. Use uma das contas de demonstração.';
+        erroEl.classList.remove('hidden');
+        return;
+      }
+
+      usuarioAtual = { ...conta, login: user };
+      paginaAtual = 'inicio';
+      mostrarTela('portal');
+    }
+
+    function fazerLogout() {
+      usuarioAtual = null;
+      paginaAtual = 'inicio';
+      fecharSidebar();
+      mostrarTela('landing');
+    }
+
+    // ============================================================
+    // SIDEBAR E MENU
+    // ============================================================
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('aberto');
+      document.getElementById('overlay').classList.toggle('visivel');
+    }
+    function fecharSidebar() {
+      document.getElementById('sidebar').classList.remove('aberto');
+      document.getElementById('overlay').classList.remove('visivel');
+    }
+
+    function getMenusPorTipo(tipo) {
+      const base = [
+        { id: 'inicio', label: 'Início', icone: '🏠' }
+      ];
+
+      if (tipo === 'aluno') {
+        return [
+          ...base,
+          { id: 'notas', label: 'Minhas Notas', icone: '📊' },
+          { id: 'frequencia', label: 'Minha Frequência', icone: '📅' },
+          { id: 'turma', label: 'Minha Turma', icone: '🏫' },
+          { id: 'avisos', label: 'Avisos', icone: '📢' }
+        ];
+      }
+      if (tipo === 'professor') {
+        return [
+          ...base,
+          { id: 'turmas', label: 'Minhas Turmas', icone: '🏫' },
+          { id: 'alunos', label: 'Alunos', icone: '👥' },
+          { id: 'notas', label: 'Notas', icone: '📊' },
+          { id: 'frequencia', label: 'Frequência', icone: '📅' },
+          { id: 'avisos', label: 'Avisos', icone: '📢' }
+        ];
+      }
+      if (tipo === 'secretaria') {
+        return [
+          ...base,
+          { id: 'matriculas', label: 'Matrículas', icone: '📝' },
+          { id: 'alunos', label: 'Alunos', icone: '👥' },
+          { id: 'turmas', label: 'Turmas e Salas', icone: '🏫' },
+          { id: 'avisos', label: 'Avisos', icone: '📢' }
+        ];
+      }
+      if (tipo === 'direcao') {
+        return [
+          ...base,
+          { id: 'alunos', label: 'Alunos', icone: '👥' },
+          { id: 'professores', label: 'Professores', icone: '👨‍🏫' },
+          { id: 'turmas', label: 'Turmas e Salas', icone: '🏫' },
+          { id: 'matriculas', label: 'Matrículas', icone: '📝' },
+          { id: 'notas', label: 'Notas', icone: '📊' },
+          { id: 'frequencia', label: 'Frequência', icone: '📅' },
+          { id: 'avisos', label: 'Avisos', icone: '📢' },
+          { id: 'restritas', label: 'Informações Restritas', icone: '🔒' },
+          { id: 'admin', label: 'Administração', icone: '⚙️' }
+        ];
+      }
+      if (tipo === 'admin') {
+        return [
+          ...base,
+          { id: 'usuarios', label: 'Usuários', icone: '👤' },
+          { id: 'permissoes', label: 'Permissões', icone: '🔑' },
+          { id: 'sistema', label: 'Sistema', icone: '🖥️' },
+          { id: 'logs', label: 'Registros de Acesso', icone: '📋' }
+        ];
+      }
+      return base;
+    }
+
+    function renderizarMenu() {
+      const menus = getMenusPorTipo(usuarioAtual.tipo);
+      const nav = document.getElementById('nav-menu');
+      nav.innerHTML = menus.map(m => `
+        <div class="nav-item ${paginaAtual === m.id ? 'active' : ''}" onclick="navegar('${m.id}')">
+          <span class="icone">${m.icone}</span>
+          <span>${m.label}</span>
+        </div>
+      `).join('');
+    }
+
+    function navegar(pagina) {
+      paginaAtual = pagina;
+      fecharSidebar();
+      renderizarPortal();
+    }
+
+    // ============================================================
+    // RENDERIZAÇÃO DO PORTAL
+    // ============================================================
+
+    function renderizarPortal() {
+      if (!usuarioAtual) return;
+
+      // Header do usuário
+      document.getElementById('user-nome').textContent = usuarioAtual.nome;
+      const papelEl = document.getElementById('user-papel');
+      const labels = {
+        aluno: 'Aluno',
+        professor: 'Professor',
+        secretaria: 'Secretaria',
+        direcao: 'Direção',
+        admin: 'Admin Técnico'
+      };
+      papelEl.textContent = labels[usuarioAtual.tipo] || usuarioAtual.tipo;
+      papelEl.className = 'papel ' + (usuarioAtual.tipo === 'direcao' || usuarioAtual.tipo === 'admin' ? usuarioAtual.tipo : '');
+
+      document.getElementById('sidebar-area').textContent = 'Área do ' + (labels[usuarioAtual.tipo] || 'Sistema');
+      document.getElementById('topbar-info').textContent = 'CMT L • Demonstração';
+
+      renderizarMenu();
+
+      // Título da página
+      const titulos = {
+        inicio: 'Início',
+        notas: 'Notas',
+        frequencia: 'Frequência',
+        turma: 'Minha Turma',
+        turmas: 'Turmas e Salas',
+        alunos: 'Alunos',
+        avisos: 'Avisos',
+        matriculas: 'Matrículas',
+        professores: 'Professores',
+        restritas: 'Informações Restritas',
+        admin: 'Administração',
+        usuarios: 'Usuários do Sistema',
+        permissoes: 'Permissões',
+        sistema: 'Configurações do Sistema',
+        logs: 'Registros de Acesso',
+        perfil: 'Perfil do Aluno'
+      };
+      document.getElementById('page-title').textContent = titulos[paginaAtual] || 'Portal';
+
+      // Conteúdo
+      const area = document.getElementById('content-area');
+      area.innerHTML = renderizarPagina(paginaAtual);
+    }
+
+    function renderizarPagina(pagina) {
+      const tipo = usuarioAtual.tipo;
+
+      // Controle de permissão básico
+      if (pagina === 'restritas' && tipo !== 'direcao') {
+        return `<div class="empty-state"><div class="icone">🔒</div><p>Acesso restrito à Direção.</p></div>`;
+      }
+      if (['usuarios','permissoes','sistema','logs'].includes(pagina) && tipo !== 'admin' && tipo !== 'direcao') {
+        return `<div class="empty-state"><div class="icone">🔒</div><p>Acesso restrito.</p></div>`;
+      }
+
+      switch (pagina) {
+        case 'inicio': return renderInicio();
+        case 'notas': return renderNotas();
+        case 'frequencia': return renderFrequencia();
+        case 'turma': return renderMinhaTurma();
+        case 'turmas': return renderTurmas();
+        case 'alunos': return renderAlunos();
+        case 'avisos': return renderAvisos();
+        case 'matriculas': return renderMatriculas();
+        case 'professores': return renderProfessores();
+        case 'restritas': return renderRestritas();
+        case 'admin': return renderAdminDirecao();
+        case 'usuarios': return renderUsuariosAdmin();
+        case 'permissoes': return renderPermissoes();
+        case 'sistema': return renderSistema();
+        case 'logs': return renderLogs();
+        case 'perfil': return renderPerfilAluno(window._perfilAlunoId);
+        default: return renderInicio();
+      }
+    }
+
+    // ---------- INÍCIO ----------
+    function renderInicio() {
+      const tipo = usuarioAtual.tipo;
+
+      if (tipo === 'aluno') {
+        const a = ALUNOS[usuarioAtual.alunoId];
+        return `
+          <div class="page-header">
+            <h2>Olá, ${a.nome.split(' ')[0]}!</h2>
+            <p>${a.turma} • Sala ${a.sala} • Matrícula ${a.matricula}</p>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card sucesso">
+              <div class="valor">${a.media.toFixed(1)}</div>
+              <div class="label">Média Geral</div>
+            </div>
+            <div class="stat-card">
+              <div class="valor">${a.frequencia}%</div>
+              <div class="label">Frequência</div>
+            </div>
+            <div class="stat-card">
+              <div class="valor">${a.turma}</div>
+              <div class="label">Turma</div>
+            </div>
+            <div class="stat-card">
+              <div class="valor">${a.sala}</div>
+              <div class="label">Sala</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Acesso Rápido</h3></div>
+            <div class="card-body">
+              <div class="actions">
+                <button class="btn btn-azul btn-sm" onclick="navegar('notas')">📊 Minhas Notas</button>
+                <button class="btn btn-azul btn-sm" onclick="navegar('frequencia')">📅 Minha Frequência</button>
+                <button class="btn btn-azul btn-sm" onclick="navegar('turma')">🏫 Minha Turma</button>
+                <button class="btn btn-azul btn-sm" onclick="navegar('avisos')">📢 Avisos</button>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Últimos Avisos</h3></div>
+            <div class="card-body">
+              ${AVISOS.slice(0,2).map(av => `
+                <div class="aviso-item">
+                  <h4>${av.titulo}</h4>
+                  <p>${av.texto}</p>
+                  <div class="data">${av.data}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      if (tipo === 'professor') {
+        const turmas = usuarioAtual.turmas || [];
+        const totalAlunos = Object.values(ALUNOS).filter(a => turmas.includes(a.turma)).length;
+        return `
+          <div class="page-header">
+            <h2>Olá, Prof. ${usuarioAtual.nome.split(' ')[0]}!</h2>
+            <p>Você leciona em ${turmas.length} turma(s)</p>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="valor">${turmas.length}</div>
+              <div class="label">Turmas</div>
+            </div>
+            <div class="stat-card">
+              <div class="valor">${totalAlunos}</div>
+              <div class="label">Alunos</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Minhas Turmas</h3></div>
+            <div class="card-body">
+              ${turmas.map(t => {
+                const info = TURMAS[t];
+                return `<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--cinza);">
+                  <div><strong>${t}</strong><br><small style="color:var(--texto-suave)">Sala ${info.sala} • ${info.total} alunos</small></div>
+                  <button class="btn btn-azul btn-sm" onclick="navegar('alunos')">Ver alunos</button>
+                </div>`;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      if (tipo === 'secretaria') {
+        const pendentes = getMatriculasPendentes().filter(m => m.status === 'PENDENTE').length;
+        return `
+          <div class="page-header">
+            <h2>Painel da Secretaria</h2>
+            <p>Gerenciamento administrativo</p>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="valor">${Object.keys(ALUNOS).length}</div>
+              <div class="label">Alunos cadastrados</div>
+            </div>
+            <div class="stat-card alerta">
+              <div class="valor">${pendentes}</div>
+              <div class="label">Matrículas pendentes</div>
+            </div>
+            <div class="stat-card">
+              <div class="valor">2</div>
+              <div class="label">Turmas ativas</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Ações Rápidas</h3></div>
+            <div class="card-body">
+              <div class="actions">
+                <button class="btn btn-azul btn-sm" onclick="navegar('matriculas')">📝 Matrículas</button>
+                <button class="btn btn-azul btn-sm" onclick="navegar('alunos')">👥 Alunos</button>
+                <button class="btn btn-azul btn-sm" onclick="navegar('turmas')">🏫 Turmas</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      if (tipo === 'direcao') {
+        const pendentes = getMatriculasPendentes().filter(m => m.status === 'PENDENTE').length;
+        return `
+          <div class="page-header">
+            <h2>Painel da Direção</h2>
+            <p>Administração geral do Colégio Militar Tiradentes</p>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="valor">${Object.keys(ALUNOS).length}</div>
+              <div class="label">Alunos</div>
+            </div>
+            <div class="stat-card">
+              <div class="valor">1</div>
+              <div class="label">Professores (demo)</div>
+            </div>
+            <div class="stat-card">
+              <div class="valor">2</div>
+              <div class="label">Turmas</div>
+            </div>
+            <div class="stat-card alerta">
+              <div class="valor">${pendentes}</div>
+              <div class="label">Matrículas pendentes</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Acesso Rápido</h3></div>
+            <div class="card-body">
+              <div class="actions">
+                <button class="btn btn-azul btn-sm" onclick="navegar('alunos')">👥 Alunos</button>
+                <button class="btn btn-azul btn-sm" onclick="navegar('matriculas')">📝 Matrículas</button>
+                <button class="btn btn-azul btn-sm" onclick="navegar('turmas')">🏫 Turmas</button>
+                <button class="btn btn-restrito btn-sm" onclick="navegar('restritas')">🔒 Informações Restritas</button>
+                <button class="btn btn-azul btn-sm" onclick="navegar('admin')">⚙️ Administração</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      if (tipo === 'admin') {
+        return `
+          <div class="page-header">
+            <h2>Administração Técnica</h2>
+            <p>Gestão do sistema CMT L (não gerencia vida escolar dos alunos)</p>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="valor">${Object.keys(USUARIOS).length}</div>
+              <div class="label">Usuários demo</div>
+            </div>
+            <div class="stat-card sucesso">
+              <div class="valor">OK</div>
+              <div class="label">Sistema</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h3>Ferramentas</h3></div>
+            <div class="card-body">
+              <div class="actions">
+                <button class="btn btn-azul btn-sm" onclick="navegar('usuarios')">👤 Usuários</button>
+                <button class="btn btn-azul btn-sm" onclick="navegar('permissoes')">🔑 Permissões</button>
+                <button class="btn btn-azul btn-sm" onclick="navegar('sistema')">🖥️ Sistema</button>
+                <button class="btn btn-azul btn-sm" onclick="navegar('logs')">📋 Logs</button>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <p style="font-size:0.9rem;color:var(--texto-suave);">
+                <strong>Nota:</strong> O Administrador Técnico gerencia contas, permissões e configurações do sistema.
+                Informações pedagógicas e médicas dos alunos pertencem à Direção e Secretaria.
+              </p>
+            </div>
+          </div>
+        `;
+      }
+
+      return '<p>Bem-vindo.</p>';
+    }
+
+    // ---------- NOTAS ----------
+    function renderNotas() {
+      const tipo = usuarioAtual.tipo;
+
+      if (tipo === 'aluno') {
+        const a = ALUNOS[usuarioAtual.alunoId];
+        return `
+          <div class="page-header">
+            <h2>Minhas Notas</h2>
+            <p>${a.nome} • ${a.turma}</p>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3>Disciplinas</h3>
+              <span class="badge badge-ativo">Média: ${a.media.toFixed(1)}</span>
+            </div>
+            <div class="card-body">
+              <div class="notas-grid">
+                ${Object.entries(a.notas).map(([disc, nota]) => `
+                  <div class="nota-item">
+                    <div class="disciplina">${disc}</div>
+                    <div class="valor-nota">${nota.toFixed(1)}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // Professor / Secretaria / Direção veem lista
+      let alunosFiltrados = Object.values(ALUNOS);
+      if (tipo === 'professor') {
+        const turmas = usuarioAtual.turmas || [];
+        alunosFiltrados = alunosFiltrados.filter(a => turmas.includes(a.turma));
+      }
+
+      return `
+        <div class="page-header">
+          <h2>Notas</h2>
+          <p>${tipo === 'professor' ? 'Alunos das suas turmas' : 'Visão administrativa'}</p>
+        </div>
+        <div class="card">
+          <div class="card-body" style="overflow-x:auto;">
+            <table class="tabela">
+              <thead>
+                <tr>
+                  <th>Aluno</th>
+                  <th>Turma</th>
+                  <th>Média</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${alunosFiltrados.slice(0, 15).map(a => `
+                  <tr>
+                    <td><strong>${a.nome}</strong><br><small>${a.matricula}</small></td>
+                    <td>${a.turma}</td>
+                    <td><strong>${a.media.toFixed(1)}</strong></td>
+                    <td><button class="btn btn-azul btn-sm" onclick="verNotasAluno('${a.matricula}')">Ver notas</button></td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+            ${alunosFiltrados.length > 15 ? '<p style="text-align:center;color:var(--texto-suave);margin-top:12px;font-size:0.85rem;">Exibindo 15 de ' + alunosFiltrados.length + ' alunos (demonstração)</p>' : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    function verNotasAluno(id) {
+      const a = ALUNOS[id];
+      if (!a) return;
+      // Verificar permissão
+      if (usuarioAtual.tipo === 'aluno' && usuarioAtual.alunoId !== id) {
+        alert('Você só pode ver as próprias notas.');
+        return;
+      }
+      if (usuarioAtual.tipo === 'professor') {
+        const turmas = usuarioAtual.turmas || [];
+        if (!turmas.includes(a.turma)) {
+          alert('Você só pode ver alunos das suas turmas.');
+          return;
+        }
+      }
+      const html = `
+        <div class="page-header">
+          <h2>Notas — ${a.nome}</h2>
+          <p>${a.turma} • Matrícula ${a.matricula}</p>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3>Disciplinas</h3>
+            <span class="badge badge-ativo">Média: ${a.media.toFixed(1)}</span>
+          </div>
+          <div class="card-body">
+            <div class="notas-grid">
+              ${Object.entries(a.notas).map(([d, n]) => `
+                <div class="nota-item">
+                  <div class="disciplina">${d}</div>
+                  <div class="valor-nota">${n.toFixed(1)}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-azul btn-sm" onclick="navegar('notas')" style="margin-top:12px;">← Voltar</button>
+      `;
+      document.getElementById('content-area').innerHTML = html;
+      document.getElementById('page-title').textContent = 'Notas — ' + a.nome;
+    }
+
+    // ---------- FREQUÊNCIA ----------
+    function renderFrequencia() {
+      const tipo = usuarioAtual.tipo;
+
+      if (tipo === 'aluno') {
+        const a = ALUNOS[usuarioAtual.alunoId];
+        return `
+          <div class="page-header">
+            <h2>Minha Frequência</h2>
+            <p>${a.nome} • ${a.turma}</p>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card ${a.frequencia >= 90 ? 'sucesso' : 'alerta'}">
+              <div class="valor">${a.frequencia}%</div>
+              <div class="label">Frequência Geral</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <p style="color:var(--texto-suave);font-size:0.9rem;">
+                Em um sistema real, aqui apareceriam os registros diários de presença/falta.
+                Nesta demonstração é exibida apenas a frequência percentual geral.
+              </p>
+            </div>
+          </div>
+        `;
+      }
+
+      let alunosFiltrados = Object.values(ALUNOS);
+      if (tipo === 'professor') {
+        const turmas = usuarioAtual.turmas || [];
+        alunosFiltrados = alunosFiltrados.filter(a => turmas.includes(a.turma));
+      }
+
+      return `
+        <div class="page-header">
+          <h2>Frequência</h2>
+          <p>${tipo === 'professor' ? 'Alunos das suas turmas' : 'Visão administrativa'}</p>
+        </div>
+        <div class="card">
+          <div class="card-body" style="overflow-x:auto;">
+            <table class="tabela">
+              <thead>
+                <tr><th>Aluno</th><th>Turma</th><th>Frequência</th></tr>
+              </thead>
+              <tbody>
+                ${alunosFiltrados.slice(0, 20).map(a => `
+                  <tr>
+                    <td><strong>${a.nome}</strong></td>
+                    <td>${a.turma}</td>
+                    <td><span class="badge ${a.frequencia >= 90 ? 'badge-aprovada' : 'badge-pendente'}">${a.frequencia}%</span></td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    // ---------- MINHA TURMA (aluno) ----------
+    function renderMinhaTurma() {
+      const a = ALUNOS[usuarioAtual.alunoId];
+      if (!a) return '<p>Dados não encontrados.</p>';
+      return `
+        <div class="page-header">
+          <h2>Minha Turma</h2>
+          <p>Informações da sua turma e sala</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="valor">${a.turma}</div>
+            <div class="label">Turma</div>
+          </div>
+          <div class="stat-card">
+            <div class="valor">${a.sala}</div>
+            <div class="label">Sala</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <p style="color:var(--texto-suave);font-size:0.9rem;">
+              Você está matriculado na turma <strong>${a.turma}</strong>, sala <strong>${a.sala}</strong>.
+              Informações detalhadas de outros alunos não são exibidas por privacidade.
+            </p>
+          </div>
+        </div>
+      `;
+    }
+
+    // ---------- TURMAS E SALAS ----------
+    function renderTurmas() {
+      return `
+        <div class="page-header">
+          <h2>Turmas e Salas</h2>
+          <p>Organização escolar</p>
+        </div>
+        <div class="stats-grid">
+          ${Object.entries(TURMAS).map(([nome, info]) => `
+            <div class="stat-card">
+              <div class="valor">${nome}</div>
+              <div class="label">Sala ${info.sala} • ${info.total} alunos</div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Detalhamento</h3></div>
+          <div class="card-body">
+            <table class="tabela">
+              <thead><tr><th>Turma</th><th>Sala</th><th>Alunos</th></tr></thead>
+              <tbody>
+                ${Object.entries(TURMAS).map(([n, i]) => `
+                  <tr><td><strong>${n}</strong></td><td>Sala ${i.sala}</td><td>${i.total}</td></tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <p style="font-size:0.85rem;color:var(--texto-suave);">
+              No futuro poderá existir mapa de sala e organização de lugares.
+              Informações individuais de localização não ficam públicas.
+            </p>
+          </div>
+        </div>
+      `;
+    }
+
+    // ---------- ALUNOS ----------
+    function renderAlunos() {
+      const tipo = usuarioAtual.tipo;
+      let lista = Object.values(ALUNOS);
+
+      if (tipo === 'professor') {
+        const turmas = usuarioAtual.turmas || [];
+        lista = lista.filter(a => turmas.includes(a.turma));
+      }
+      if (tipo === 'aluno') {
+        return `<div class="empty-state"><div class="icone">🔒</div><p>Alunos não podem listar outros alunos.</p></div>`;
+      }
+
+      return `
+        <div class="page-header">
+          <h2>Alunos</h2>
+          <p>${tipo === 'professor' ? 'Alunos das suas turmas' : 'Cadastro de alunos'}</p>
+        </div>
+        <div class="search-box">
+          <input type="text" id="busca-aluno" placeholder="Pesquisar por nome ou matrícula..." oninput="filtrarAlunos()" />
+        </div>
+        <div class="card">
+          <div class="card-body" style="overflow-x:auto;">
+            <table class="tabela" id="tabela-alunos">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Matrícula</th>
+                  <th>Turma</th>
+                  <th>Sala</th>
+                  <th>Média</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${lista.map(a => `
+                  <tr data-nome="${a.nome.toLowerCase()}" data-mat="${a.matricula}">
+                    <td><strong>${a.nome}</strong></td>
+                    <td>${a.matricula}</td>
+                    <td>${a.turma}</td>
+                    <td>${a.sala}</td>
+                    <td>${a.media.toFixed(1)}</td>
+                    <td>
+                      <button class="btn btn-azul btn-sm" onclick="abrirPerfil('${a.matricula}')">Ver perfil</button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function filtrarAlunos() {
+      const q = (document.getElementById('busca-aluno')?.value || '').toLowerCase();
+      document.querySelectorAll('#tabela-alunos tbody tr').forEach(tr => {
+        const nome = tr.dataset.nome || '';
+        const mat = tr.dataset.mat || '';
+        tr.style.display = (nome.includes(q) || mat.includes(q)) ? '' : 'none';
+      });
+    }
+
+    function abrirPerfil(id) {
+      const a = ALUNOS[id];
+      if (!a) return;
+
+      // Permissões
+      if (usuarioAtual.tipo === 'aluno' && usuarioAtual.alunoId !== id) {
+        alert('Acesso negado: você só pode ver o próprio perfil.');
+        return;
+      }
+      if (usuarioAtual.tipo === 'professor') {
+        const turmas = usuarioAtual.turmas || [];
+        if (!turmas.includes(a.turma)) {
+          alert('Acesso negado: este aluno não pertence às suas turmas.');
+          return;
+        }
+      }
+
+      window._perfilAlunoId = id;
+      paginaAtual = 'perfil';
+      renderizarPortal();
+    }
+
+    function renderPerfilAluno(id) {
+      const a = ALUNOS[id];
+      if (!a) return '<p>Aluno não encontrado.</p>';
+
+      const tipo = usuarioAtual.tipo;
+      const podeVerAdmin = ['secretaria', 'direcao'].includes(tipo);
+      const podeVerMedico = tipo === 'direcao';
+      const restrito = DADOS_RESTRITOS[id];
+
+      let extras = '';
+      if (podeVerAdmin) {
+        extras += `
+          <div class="card">
+            <div class="card-header"><h3>Dados Cadastrais</h3></div>
+            <div class="card-body">
+              <p><strong>Responsável:</strong> ${a.responsavel}</p>
+              <p><strong>E-mail:</strong> ${a.emailResp}</p>
+              <p><strong>Telefone:</strong> ${a.telefone}</p>
+            </div>
+          </div>
+        `;
+      }
+
+      if (podeVerMedico) {
+        extras += `
+          <div class="card">
+            <div class="card-header">
+              <h3>🔒 Informações Médicas (Restritas)</h3>
+            </div>
+            <div class="card-body">
+              ${restrito ? `
+                <div class="restrito-box">
+                  <h4>🔒 Acesso exclusivo da Direção</h4>
+                  ${restrito.condicoes.map(c => `<div class="restrito-item">${c}</div>`).join('')}
+                  <p style="margin-top:12px;font-size:0.85rem;color:var(--texto-suave);">${restrito.observacoes}</p>
+                </div>
+              ` : '<p style="color:var(--texto-suave);">Nenhuma informação médica cadastrada para este aluno (demonstração).</p>'}
+            </div>
+          </div>
+        `;
+      } else if (tipo === 'professor' || tipo === 'secretaria') {
+        extras += `
+          <div class="card">
+            <div class="card-body">
+              <p style="font-size:0.85rem;color:var(--texto-suave);">
+                🔒 Informações médicas e laudos são de acesso exclusivo da <strong>Direção</strong>.
+              </p>
+            </div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="perfil-header">
+          <div class="avatar">${a.nome.split(' ').map(n => n[0]).slice(0,2).join('')}</div>
+          <div class="perfil-info">
+            <h2>${a.nome}</h2>
+            <p>Matrícula ${a.matricula} • ${a.turma} • Sala ${a.sala}</p>
+          </div>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card sucesso">
+            <div class="valor">${a.media.toFixed(1)}</div>
+            <div class="label">Média Geral</div>
+          </div>
+          <div class="stat-card">
+            <div class="valor">${a.frequencia}%</div>
+            <div class="label">Frequência</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Notas</h3></div>
+          <div class="card-body">
+            <div class="notas-grid">
+              ${Object.entries(a.notas).map(([d, n]) => `
+                <div class="nota-item">
+                  <div class="disciplina">${d}</div>
+                  <div class="valor-nota">${n.toFixed(1)}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+        ${extras}
+        <button class="btn btn-azul btn-sm" onclick="navegar('alunos')" style="margin-top:8px;">← Voltar à lista</button>
+      `;
+    }
+
+    // ---------- AVISOS ----------
+    function renderAvisos() {
+      return `
+        <div class="page-header">
+          <h2>Avisos</h2>
+          <p>Comunicados da escola</p>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            ${AVISOS.map(av => `
+              <div class="aviso-item">
+                <h4>${av.titulo}</h4>
+                <p>${av.texto}</p>
+                <div class="data">${av.data}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        ${['secretaria','direcao'].includes(usuarioAtual.tipo) ? `
+          <div class="card">
+            <div class="card-body">
+              <p style="font-size:0.85rem;color:var(--texto-suave);">
+                No futuro, secretaria e direção poderão publicar novos avisos por aqui.
+              </p>
+            </div>
+          </div>
+        ` : ''}
+      `;
+    }
+
+    // ---------- MATRÍCULAS ----------
+    function renderMatriculas() {
+      if (!['secretaria', 'direcao'].includes(usuarioAtual.tipo)) {
+        return `<div class="empty-state"><div class="icone">🔒</div><p>Acesso restrito à Secretaria e Direção.</p></div>`;
+      }
+
+      const lista = getMatriculasPendentes();
+
+      return `
+        <div class="page-header">
+          <h2>Matrículas</h2>
+          <p>Solicitações de matrícula</p>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card alerta">
+            <div class="valor">${lista.filter(m => m.status === 'PENDENTE').length}</div>
+            <div class="label">Pendentes</div>
+          </div>
+          <div class="stat-card sucesso">
+            <div class="valor">${lista.filter(m => m.status === 'APROVADA').length}</div>
+            <div class="label">Aprovadas</div>
+          </div>
+          <div class="stat-card">
+            <div class="valor">${lista.filter(m => m.status === 'RECUSADA').length}</div>
+            <div class="label">Recusadas</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Solicitações</h3></div>
+          <div class="card-body" style="overflow-x:auto;">
+            ${lista.length === 0 ? `
+              <div class="empty-state">
+                <div class="icone">📝</div>
+                <p>Nenhuma solicitação de matrícula ainda.<br>Use a página inicial → "Fazer Matrícula" para testar.</p>
+              </div>
+            ` : `
+              <table class="tabela">
+                <thead>
+                  <tr>
+                    <th>Aluno</th>
+                    <th>Responsável</th>
+                    <th>Turma</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${lista.map((m, i) => `
+                    <tr>
+                      <td><strong>${m.nome}</strong><br><small>${m.nasc || ''}</small></td>
+                      <td>${m.responsavel}<br><small>${m.email}</small></td>
+                      <td>${m.turma}</td>
+                      <td><span class="badge badge-${m.status === 'PENDENTE' ? 'pendente' : m.status === 'APROVADA' ? 'aprovada' : 'recusada'}">${m.status}</span></td>
+                      <td>
+                        ${m.status === 'PENDENTE' ? `
+                          <button class="btn btn-sucesso btn-sm" onclick="atualizarMatricula(${i},'APROVADA')">Aprovar</button>
+                          <button class="btn btn-erro btn-sm" onclick="atualizarMatricula(${i},'RECUSADA')">Recusar</button>
+                        ` : '—'}
+                      </td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            `}
+          </div>
+        </div>
+      `;
+    }
+
+    function atualizarMatricula(index, status) {
+      const lista = getMatriculasPendentes();
+      if (lista[index]) {
+        lista[index].status = status;
+        salvarMatriculas(lista);
+        renderizarPortal();
+      }
+    }
+
+    // ---------- PROFESSORES (direção) ----------
+    function renderProfessores() {
+      return `
+        <div class="page-header">
+          <h2>Professores</h2>
+          <p>Quadro docente (demonstração)</p>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <table class="tabela">
+              <thead><tr><th>Nome</th><th>Turmas</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><strong>Carlos Almeida</strong></td>
+                  <td>9º A, 9º B</td>
+                  <td><span class="badge badge-ativo">Ativo</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <p style="margin-top:16px;font-size:0.85rem;color:var(--texto-suave);">
+              Nesta demonstração há apenas um professor cadastrado. Em produção, a direção gerenciaria o quadro completo.
+            </p>
+          </div>
+        </div>
+      `;
+    }
+
+    // ---------- INFORMAÇÕES RESTRITAS (só direção) ----------
+    function renderRestritas() {
+      const idsComDados = Object.keys(DADOS_RESTRITOS);
+      return `
+        <div class="page-header">
+          <h2>🔒 Informações Restritas</h2>
+          <p>Acesso exclusivo da Direção — dados médicos e laudos (fictícios)</p>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="restrito-box" style="margin-bottom:20px;">
+              <h4>⚠️ Área protegida</h4>
+              <p style="font-size:0.9rem;">
+                Conforme a regra institucional deste projeto, <strong>somente a Direção</strong> tem acesso às informações médicas dos alunos.
+                Professores e secretaria não visualizam o prontuário completo.
+              </p>
+            </div>
+            ${idsComDados.length === 0 ? '<p>Nenhum registro restrito.</p>' : idsComDados.map(id => {
+              const a = ALUNOS[id];
+              const d = DADOS_RESTRITOS[id];
+              return `
+                <div class="card" style="margin-bottom:12px;box-shadow:none;border:1px solid #c4b5fd;">
+                  <div class="card-header">
+                    <h3>${a ? a.nome : id}</h3>
+                    <span class="badge badge-ativo">${a ? a.turma : ''}</span>
+                  </div>
+                  <div class="card-body">
+                    ${d.condicoes.map(c => `<div class="restrito-item">${c}</div>`).join('')}
+                    <p style="margin-top:10px;font-size:0.85rem;color:var(--texto-suave);">${d.observacoes}</p>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // ---------- ADMIN DIREÇÃO ----------
+    function renderAdminDirecao() {
+      return `
+        <div class="page-header">
+          <h2>Administração</h2>
+          <p>Configurações e controles da direção</p>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Controles</h3></div>
+          <div class="card-body">
+            <div class="actions">
+              <button class="btn btn-azul btn-sm" onclick="alert('Em produção: liberaria o portal para o ano letivo.')">🔓 Liberar Portal</button>
+              <button class="btn btn-azul btn-sm" onclick="navegar('avisos')">📢 Gerenciar Avisos</button>
+              <button class="btn btn-restrito btn-sm" onclick="navegar('restritas')">🔒 Inf. Restritas</button>
+            </div>
+            <p style="margin-top:16px;font-size:0.85rem;color:var(--texto-suave);">
+              O botão "Liberar Portal" no futuro permitirá à direção liberar o acesso dos alunos/responsáveis
+              independentemente de data fixa no código.
+            </p>
+          </div>
+        </div>
+      `;
+    }
+
+    // ---------- ADMIN TÉCNICO ----------
+    function renderUsuariosAdmin() {
+      return `
+        <div class="page-header">
+          <h2>Usuários do Sistema</h2>
+          <p>Contas de acesso (demonstração)</p>
+        </div>
+        <div class="card">
+          <div class="card-body" style="overflow-x:auto;">
+            <table class="tabela">
+              <thead><tr><th>Usuário</th><th>Nome</th><th>Tipo</th><th>Status</th></tr></thead>
+              <tbody>
+                ${Object.entries(USUARIOS).map(([login, u]) => `
+                  <tr>
+                    <td><code>${login}</code></td>
+                    <td>${u.nome}</td>
+                    <td>${u.tipo}</td>
+                    <td><span class="badge badge-ativo">Ativo</span></td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPermissoes() {
+      return `
+        <div class="page-header">
+          <h2>Permissões</h2>
+          <p>Regras de acesso por perfil</p>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <table class="tabela">
+              <thead><tr><th>Perfil</th><th>Acesso principal</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Aluno</strong></td><td>Próprios dados (notas, frequência, turma)</td></tr>
+                <tr><td><strong>Professor</strong></td><td>Alunos e dados pedagógicos das próprias turmas</td></tr>
+                <tr><td><strong>Secretaria</strong></td><td>Cadastros, matrículas, dados administrativos</td></tr>
+                <tr><td><strong>Direção</strong></td><td>Acesso ampliado + informações médicas restritas</td></tr>
+                <tr><td><strong>Admin Técnico</strong></td><td>Usuários, permissões, sistema (não vida escolar)</td></tr>
+              </tbody>
+            </table>
+            <p style="margin-top:16px;font-size:0.85rem;color:var(--texto-suave);">
+              No futuro, com Firebase Security Rules, essas permissões serão aplicadas no banco de dados,
+              não apenas na interface.
+            </p>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderSistema() {
+      return `
+        <div class="page-header">
+          <h2>Sistema</h2>
+          <p>Configurações técnicas</p>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <p><strong>Versão:</strong> 1.0 — Protótipo de demonstração</p>
+            <p><strong>Tecnologia atual:</strong> HTML + CSS + JavaScript (single page)</p>
+            <p><strong>Próximo passo:</strong> Firebase Authentication + Firestore + Security Rules</p>
+            <p style="margin-top:12px;font-size:0.85rem;color:var(--texto-suave);">
+              Este protótipo roda 100% no navegador. Dados de matrícula são salvos no localStorage do dispositivo.
+            </p>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderLogs() {
+      return `
+        <div class="page-header">
+          <h2>Registros de Acesso</h2>
+          <p>Logs fictícios de demonstração</p>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <table class="tabela">
+              <thead><tr><th>Data/Hora</th><th>Usuário</th><th>Ação</th></tr></thead>
+              <tbody>
+                <tr><td>19/09/2026 21:30</td><td>direcao.demo</td><td>Login</td></tr>
+                <tr><td>19/09/2026 21:28</td><td>professor.demo</td><td>Consulta notas 9º A</td></tr>
+                <tr><td>19/09/2026 21:25</td><td>aluno.demo</td><td>Login</td></tr>
+                <tr><td>19/09/2026 21:20</td><td>secretaria.demo</td><td>Análise de matrícula</td></tr>
+              </tbody>
+            </table>
+            <p style="margin-top:12px;font-size:0.85rem;color:var(--texto-suave);">Dados fictícios para demonstração.</p>
+          </div>
+        </div>
+      `;
+    }
+
+    // ============================================================
+    // MATRÍCULA
+    // ============================================================
+
+    function enviarMatricula(e) {
+      e.preventDefault();
+      const msg = document.getElementById('matricula-msg');
+
+      const nova = {
+        id: Date.now(),
+        nome: document.getElementById('mat-nome').value.trim(),
+        nasc: document.getElementById('mat-nasc').value,
+        turma: document.getElementById('mat-turma').value,
+        responsavel: document.getElementById('mat-resp').value.trim(),
+        email: document.getElementById('mat-email').value.trim(),
+        telefone: document.getElementById('mat-tel').value.trim(),
+        obs: document.getElementById('mat-obs').value.trim(),
+        status: 'PENDENTE',
+        data: new Date().toLocaleDateString('pt-BR')
+      };
+
+      const lista = getMatriculasPendentes();
+      lista.push(nova);
+      salvarMatriculas(lista);
+
+      msg.className = 'msg-sucesso';
+      msg.innerHTML = `
+        <strong>Solicitação enviada com sucesso!</strong><br>
+        Status: <strong>PENDENTE</strong><br>
+        A secretaria analisará a solicitação. Esta é uma demonstração — nenhum dado real foi enviado a servidores.
+      `;
+      msg.classList.remove('hidden');
+      document.getElementById('form-matricula').reset();
+    }
+
+    // ============================================================
+    // INICIALIZAÇÃO
+    // ============================================================
+
+    // Garante que a landing seja a tela inicial
+    mostrarTela('landing');
+  </script>
+</body>
+</html>
